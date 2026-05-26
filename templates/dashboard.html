@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ title }} | Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;600;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/app.css') }}">
+  <script defer src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
+  <script defer src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+</head>
+<body data-teacher-token="{{ teacher_action_token }}" data-total-tasks="{{ total_tasks }}">
+  <main class="page">
+    <header class="ws-header">
+      <div class="header-logos">
+        <img src="{{ url_for('static', filename='img/logo-gsm-transparent.png') }}" alt="GSM" class="logo">
+        <div>
+          <h1 class="ws-title">Lehrer-Dashboard</h1>
+          <p class="ws-subtitle">{{ title }} | Live-Protokoll und KI-Freigaben</p>
+        </div>
+        <a class="btn btn-outline" href="{{ url_for('lehrer_logout') }}" style="margin-left:auto;background:white">Logout</a>
+      </div>
+    </header>
+
+    <section class="dashboard-grid">
+      <div class="kpi"><span>Aktive Schueler</span><strong id="kpi-students">0</strong></div>
+      <div class="kpi"><span>Offene KI-Anfragen</span><strong id="kpi-requests">0</strong></div>
+      <div class="kpi"><span>Antworten</span><strong id="kpi-answers">0</strong></div>
+      <div class="kpi"><span>Tokens heute</span><strong id="kpi-tokens">0</strong></div>
+    </section>
+
+    <section class="dashboard-panel" style="margin-top:14px">
+      <h2>Sitzungsverwaltung</h2>
+      <div class="dashboard-actions">
+        <input class="field" id="snapshot-name" style="max-width:320px" placeholder="Name fuer Snapshot">
+        <button class="btn-primary" type="button" id="save-session-btn">Speichern</button>
+        <select class="field" id="session-select" style="max-width:320px"></select>
+        <button class="btn-outline" type="button" id="load-session-btn">Laden</button>
+        <button class="btn-outline" type="button" id="delete-session-btn">Snapshot loeschen</button>
+        <button class="btn-danger" type="button" id="reset-session-btn">Aktuelle Sitzung loeschen</button>
+      </div>
+      <p class="feedback" id="session-feedback"></p>
+    </section>
+
+    <div class="dashboard-layout">
+      <section class="dashboard-panel">
+        <h2>Schueler</h2>
+        <table class="data-table">
+          <thead>
+            <tr><th>Pseudonym</th><th>Klasse</th><th>Fortschritt</th><th>Status</th><th>Detail</th></tr>
+          </thead>
+          <tbody id="students-body"></tbody>
+        </table>
+      </section>
+
+      <section class="dashboard-panel">
+        <h2>KI-Anfragen</h2>
+        <div class="stack" id="requests-list"></div>
+      </section>
+    </div>
+
+    <div class="dashboard-layout">
+      <section class="dashboard-panel">
+        <h2>Antwort-Protokoll</h2>
+        <div class="stack" id="answers-list"></div>
+      </section>
+      <section class="dashboard-panel">
+        <h2>KI-Chats</h2>
+        <div class="stack" id="chats-list"></div>
+      </section>
+    </div>
+  </main>
+</body>
+</html>

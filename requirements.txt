@@ -1,6 +1,6 @@
-# requirements.txt
-flask
-flask_cors
-google-generativeai
-python-dotenv
-gunicorn
+flask>=3.0
+flask-socketio>=5.3
+python-dotenv>=1.0
+google-generativeai>=0.8
+gunicorn>=21.2
+eventlet>=0.36

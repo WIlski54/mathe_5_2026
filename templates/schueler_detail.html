@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ title }} | {{ student.pseudonym }}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;600;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/app.css') }}">
+  <script defer src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
+  <script defer src="{{ url_for('static', filename='js/detail.js') }}"></script>
+</head>
+<body data-teacher-token="{{ teacher_action_token }}" data-student-id="{{ student.id }}" data-total-tasks="{{ total_tasks }}">
+  <main class="page">
+    <header class="ws-header">
+      <div class="header-logos">
+        <div>
+          <h1 class="ws-title">{{ student.pseudonym }}</h1>
+          <p class="ws-subtitle">{{ student.klasse }} | Detailansicht</p>
+        </div>
+        <a class="btn btn-outline" href="{{ url_for('dashboard') }}" style="margin-left:auto;background:white">Zurueck</a>
+      </div>
+    </header>
+
+    <section class="progress-panel">
+      <div class="progress-line">
+        <span>Fortschritt</span>
+        <span id="progress-label">0/{{ total_tasks }} Aufgaben</span>
+      </div>
+      <div class="progress-track"><div class="progress-fill" id="progress-fill"></div></div>
+    </section>
+
+    <div class="dashboard-layout">
+      <section class="dashboard-panel">
+        <h2>Antworten</h2>
+        <div class="stack" id="answers-list"></div>
+      </section>
+      <section class="dashboard-panel">
+        <h2>KI-Verlauf</h2>
+        <div class="stack" id="chats-list"></div>
+      </section>
+    </div>
+
+    <section class="dashboard-panel" style="margin-top:14px">
+      <h2>KI-Anfragen</h2>
+      <div class="stack" id="requests-list"></div>
+    </section>
+  </main>
+</body>
+</html>

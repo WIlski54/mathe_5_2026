@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ title }} | Lehrerlogin</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;600;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/app.css') }}">
+</head>
+<body>
+  <main class="login-shell">
+    <section class="login-card">
+      <h1>Lehrerbereich</h1>
+      <p style="color:var(--muted)">Live-Dashboard, KI-Freigaben und Sitzungsverwaltung.</p>
+      {% if error %}<div class="error">{{ error }}</div>{% endif %}
+      <form method="post">
+        <label for="passwort">Passwort</label>
+        <input id="passwort" name="passwort" type="password" required>
+        <button class="btn-primary" type="submit" style="width:100%;margin-top:16px">Einloggen</button>
+      </form>
+      <p style="margin:18px 0 0"><a href="{{ url_for('login') }}">Zur Schueleransicht</a></p>
+    </section>
+  </main>
+</body>
+</html>

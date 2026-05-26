@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ title }}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;600;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/app.css') }}">
+  <script>
+    window.MathJax = {
+      tex: { inlineMath: [["$", "$"], ["\\(", "\\)"]], displayMath: [["$$", "$$"], ["\\[", "\\]"]] },
+      startup: { typeset: false }
+    };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script defer src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
+  <script defer src="{{ url_for('static', filename='js/app.js') }}"></script>
+</head>
+<body data-topic-id="{{ topic_id }}" data-total-tasks="{{ total_tasks }}">
+  <main class="page">
+    <header class="ws-header">
+      <div class="header-logos">
+        <img src="{{ url_for('static', filename='img/logo-gsm-transparent.png') }}" alt="GSM" class="logo">
+        <div>
+          <h1 class="ws-title">{{ title }}</h1>
+          <p class="ws-subtitle">{{ pseudonym }} | {{ klasse }} | Rechnen, Teilbarkeit, Runden, Groessen</p>
+        </div>
+        <img src="{{ url_for('static', filename='img/WK_8.png') }}" alt="WK" class="logo logo-wk">
+      </div>
+    </header>
+
+    <section class="progress-panel" aria-live="polite">
+      <div class="progress-line">
+        <span>Dein Fortschritt</span>
+        <span id="progress-label">0/{{ total_tasks }} Aufgaben</span>
+      </div>
+      <div class="progress-track"><div class="progress-fill" id="progress-fill"></div></div>
+    </section>
+
+    <nav class="tabs" aria-label="Arbeitsbereiche">
+      <button class="tab-btn active" type="button" data-tab="start">Start</button>
+      <button class="tab-btn" type="button" data-tab="tasks">Aufgaben</button>
+      <button class="tab-btn" type="button" data-tab="wissen">Grundwissen</button>
+      <button class="tab-btn" type="button" data-tab="backup">Sicherung</button>
+    </nav>
+
+    <section class="tab-panel active" id="tab-start">
+      <div class="intro-grid">
+        <article class="card">
+          <h2>Worum es geht</h2>
+          <p>
+            Du trainierst zentrale Grundlagen aus Klasse 5: Klammern, Punkt-vor-Strich,
+            Teiler, Runden, Zahlenstrahl, Groessen und Sachaufgaben. Jede Aufgabe gibt es
+            in drei Niveaus.
+          </p>
+          <ul class="learning-list">
+            <li><strong>A:</strong> klare Schritte und Hilfen</li>
+            <li><strong>B:</strong> Standardaufgaben mit Begruendung</li>
+            <li><strong>C:</strong> Transfer und eigene Erklaerungen</li>
+          </ul>
+        </article>
+        <article class="card">
+          <h2>Zahlenstrahl</h2>
+          <p>Die Markierung zeigt 871 zwischen 800 und 900. Beim Runden entscheidest du, welcher Hunderter naeher liegt.</p>
+          <div class="numberline" aria-label="Zahlenstrahl von 800 bis 900">
+            <span class="tick" style="left:0%">800</span>
+            <span class="tick" style="left:50%">850</span>
+            <span class="tick" style="left:100%">900</span>
+            <span class="pin" style="left:71%"></span>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="tab-panel" id="tab-tasks">
+      <div id="tasks-root"></div>
+    </section>
+
+    <section class="tab-panel" id="tab-wissen">
+      <article class="card">
+        <div class="knowledge-layout">
+          <figure class="knowledge-visual">
+            <img src="{{ url_for('static', filename='img/tasks/grundwissen-kompakt.png') }}" alt="Symbolkarte Grundwissen kompakt mit Buch, Kreisdiagramm, Wiederholungspfeil und Checkliste">
+          </figure>
+          <div>
+            <h2>Grundwissen kompakt</h2>
+            <div class="answer-grid">
+              <div>
+                <h3>Rechenreihenfolge</h3>
+                <p>Erst Klammern, dann Punktrechnung, dann Strichrechnung. Von links nach rechts, wenn die Rechenart gleich stark ist.</p>
+              </div>
+              <div>
+                <h3>Teilbarkeit</h3>
+                <p>Eine Zahl ist durch 2 teilbar, wenn sie gerade endet. Durch 5 endet sie auf 0 oder 5. Durch 10 endet sie auf 0.</p>
+              </div>
+              <div>
+                <h3>Runden</h3>
+                <p>Schau auf die Stelle rechts neben der Rundungsstelle. 0 bis 4 rundest du ab, 5 bis 9 rundest du auf.</p>
+              </div>
+              <div>
+                <h3>Sachaufgaben</h3>
+                <p>Notiere: Was ist gegeben? Was ist gesucht? Welche Rechnung passt? Schreibe am Ende einen Antwortsatz.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <section class="tab-panel" id="tab-backup">
+      <article class="tool-panel">
+        <h2>Lokale Sicherung</h2>
+        <p>
+          Diese Sicherung bleibt auf deinem Geraet. Beim Laden wird nichts automatisch an
+          die Lehrkraft gesendet. Speichere einzelne Antworten danach erneut, wenn sie im
+          Dashboard erscheinen sollen.
+        </p>
+        <div class="backup-actions">
+          <button class="btn-primary" type="button" id="export-json-btn">JSON sichern</button>
+          <button class="btn-outline" type="button" id="import-json-btn">JSON-Datei laden</button>
+          <button class="btn-outline" type="button" id="paste-json-btn">JSON-Text einfuegen</button>
+          <input id="import-json-file" type="file" accept="application/json,.json" hidden>
+        </div>
+        <div class="backup-text" id="backup-text-wrap">
+          <label for="backup-json-text"><strong>JSON-Text</strong></label>
+          <textarea id="backup-json-text" spellcheck="false"></textarea>
+          <div class="backup-actions">
+            <button class="btn-accent" type="button" id="load-json-text-btn">Text laden</button>
+          </div>
+        </div>
+        <p class="feedback" id="backup-feedback"></p>
+      </article>
+    </section>
+  </main>
+
+  <button class="chat-toggle btn-magenta" type="button" id="chat-toggle">KI-Tutor</button>
+  <aside class="chat-panel" id="chat-panel" aria-label="KI-Tutor">
+    <div class="chat-head">
+      <img src="{{ url_for('static', filename='img/gsm_avatar.png') }}" alt="">
+      <div>
+        <strong>GSM-Lernassistent</strong>
+        <div id="chat-status" style="font-size:.88rem;opacity:.9">Erst nach Freigabe senden</div>
+      </div>
+    </div>
+    <div class="chat-log" id="chat-log"></div>
+    <div class="chat-form">
+      <textarea id="chat-input" rows="3" placeholder="Stelle deine Frage zur Aufgabe oder zum Grundwissen."></textarea>
+      <div class="task-actions">
+        <button class="btn-primary" type="button" id="chat-send-btn">Senden</button>
+        <button class="btn-outline" type="button" id="chat-request-btn">Freigabe anfragen</button>
+      </div>
+    </div>
+  </aside>
+
+  <div class="ki-anfrage-overlay" id="ki-overlay">
+    <div class="ki-anfrage-modal">
+      <h3 id="modal-title">KI-Funktion nutzen?</h3>
+      <p id="modal-text"></p>
+      <div class="ki-warte-status" id="warte-status">Warte auf Freigabe der Lehrkraft...</div>
+      <div class="task-actions">
+        <button class="btn-primary" type="button" id="modal-anfrage-btn">Freigabe anfragen</button>
+        <button class="btn-outline" type="button" id="modal-cancel-btn">Abbrechen</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+</body>
+</html>

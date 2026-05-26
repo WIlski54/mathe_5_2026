@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ title }} | Login</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;600;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/app.css') }}">
+</head>
+<body>
+  <main class="login-shell">
+    <section class="login-card">
+      <div class="header-logos" style="margin-bottom:16px">
+        <img src="{{ url_for('static', filename='img/logo-gsm-transparent.png') }}" alt="GSM" class="logo">
+        <div>
+          <h1>{{ title }}</h1>
+          <p class="ws-subtitle" style="color:var(--muted)">Interaktives Arbeitsblatt | Klasse 5</p>
+        </div>
+      </div>
+
+      {% if error %}<div class="error">{{ error }}</div>{% endif %}
+
+      <form method="post">
+        <label for="pseudonym">Pseudonym</label>
+        <input id="pseudonym" name="pseudonym" type="text" maxlength="30" autocomplete="off" required>
+
+        <label for="klasse">Klasse oder Kurs</label>
+        <input id="klasse" name="klasse" type="text" maxlength="20" placeholder="z.B. 5a" autocomplete="off" required>
+
+        <div class="notice">
+          <strong>Datenschutz- und KI-Hinweis</strong>
+          <p>
+            Nutze ein Pseudonym, keinen echten Namen. Deine Lehrkraft kann Antworten,
+            Fortschritt, Zeitpunkte, KI-Freigaben und KI-Chats dieser Unterrichtssitzung sehen.
+            Der KI-Tutor kann Fehler machen und ersetzt keine Bewertung durch die Lehrkraft.
+          </p>
+          <details>
+            <summary>Langfassung anzeigen</summary>
+            <p>
+              Diese App speichert fuer die Unterrichtssitzung dein Pseudonym, deine Klasse,
+              deine Antworten, deinen Aufgabenfortschritt, Zeitpunkte, KI-Anfragen und KI-Chats
+              lokal auf dem Schul-/Projektserver. Bitte gib keine echten Namen, Adressen,
+              Gesundheitsdaten oder andere sensible personenbezogene Daten ein.
+            </p>
+            <p>
+              Die KI-Funktionen werden erst nach Freigabe durch die Lehrkraft genutzt. Die
+              generative KI kann unvollstaendige oder falsche Antworten geben. Wichtiges wird
+              gemeinsam geprueft. Die Lehrkraft kann Sitzungsdaten im Dashboard loeschen oder
+              als Unterrichtssnapshot speichern. Fuer Auskunfts-, Berichtigungs- oder
+              Loeschanliegen gelten die schulischen Datenschutzwege und die zustaendige
+              Datenschutzbeauftragte bzw. der Datenschutzbeauftragte.
+            </p>
+            <p>
+              Dieser Text ist eine schulische Transparenzvorlage und ersetzt keine Rechtsberatung.
+            </p>
+          </details>
+        </div>
+
+        <label class="check-row" for="datenschutz">
+          <input id="datenschutz" name="datenschutz" type="checkbox" required>
+          <span>Ich habe den Datenschutz- und KI-Hinweis gelesen.</span>
+        </label>
+
+        <button class="btn-primary" type="submit" style="width:100%">Starten</button>
+      </form>
+
+      <p style="margin:18px 0 0;text-align:center">
+        <a href="{{ url_for('lehrer_login') }}" style="color:#777;font-size:.88rem">Lehrerbereich</a>
+      </p>
+    </section>
+  </main>
+</body>
+</html>
