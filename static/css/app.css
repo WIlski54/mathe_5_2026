@@ -113,7 +113,33 @@ button:disabled {
 }
 
 .logo-wk {
+  flex: 0 0 auto;
+}
+
+.header-actions {
   margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.logout-btn {
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid rgba(255, 255, 255, 0.68);
+  border-radius: var(--radius);
+  padding: 8px 12px;
+  color: white;
+  text-decoration: none;
+  font-weight: 800;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.logout-btn:active,
+.logout-btn:focus-visible {
+  background: rgba(255, 255, 255, 0.18);
 }
 
 .ws-title {
@@ -786,7 +812,7 @@ textarea {
     max-width: 280px;
   }
 
-  .logo-wk {
+  .header-actions .logo-wk {
     display: none;
   }
 }

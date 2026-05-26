@@ -27,7 +27,10 @@
           <h1 class="ws-title">{{ title }}</h1>
           <p class="ws-subtitle">{{ pseudonym }} | {{ klasse }} | Rechnen, Teilbarkeit, Runden, Groessen</p>
         </div>
-        <img src="{{ url_for('static', filename='img/WK_8.png') }}" alt="WK" class="logo logo-wk">
+        <div class="header-actions">
+          <img src="{{ url_for('static', filename='img/WK_8.png') }}" alt="WK" class="logo logo-wk">
+          <a class="logout-btn" href="{{ url_for('logout') }}">Logout</a>
+        </div>
       </div>
     </header>
 
